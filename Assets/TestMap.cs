@@ -3,13 +3,13 @@ using DreamScape;
 
 public class TestMap : MonoBehaviour
 {
-	EncounterMap map;
+	TiledMeshMap map;
 
 	// Use this for initialization
 	void Start()
 	{
 		Mesh mapMesh = new Mesh();
-		map = new EncounterMap();
+		map = new TiledMeshMap();
 		map.Load();
 		map.BuildMap(mapMesh);
 		GetComponent<MeshFilter>().mesh = mapMesh;

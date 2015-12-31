@@ -2,7 +2,7 @@
 
 namespace DreamScape
 {
-	public class EncounterMap
+	public class TiledMeshMap
 	{
 		public string Name { get; private set; }
 		public int Width { get; private set; }

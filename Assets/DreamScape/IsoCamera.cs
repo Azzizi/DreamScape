@@ -3,7 +3,8 @@ using System.Collections;
 
 namespace DreamScape
 {
-	public class SceneManager : MonoBehaviour
+	[RequireComponent(typeof(Camera))]
+	public class IsoCamera : MonoBehaviour
 	{
 		public int pixelSize = 2;
 
@@ -11,20 +12,29 @@ namespace DreamScape
 		private Camera finalCamera;
 		private RenderTexture sceneTarget;
 		private GameObject finalSceneQuad;
+		private bool dirty = true;
+
+		private Vector3 cameraTarget;
+		private float cameraRotation;
+
+		public Vector3 CameraTarget { get { return cameraTarget; } set { cameraTarget = value; dirty = true; } }
+		public float CameraRotation { get { return cameraRotation; } set { cameraRotation = value; dirty = true; } }
+		public Vector3 CameraForward { get { return transform.forward; } }
 
 		// Use this for initialization
 		void Start()
 		{
 			if (Camera.main == null)
-				sceneCamera = new GameObject("SceneCamera").AddComponent<Camera>();
+				sceneCamera = gameObject.AddComponent<Camera>();
 			else
-				sceneCamera = Camera.main;
+				sceneCamera = GetComponent<Camera>();
 
 			sceneCamera.clearFlags = CameraClearFlags.SolidColor;
 			// sceneCamera.backgroundColor = Color.black;
 			sceneCamera.orthographic = true;
-			sceneCamera.transform.position = Quaternion.Euler(30f, 45f, 0f) * new Vector3(0f, 0f, -20f);
-			sceneCamera.transform.LookAt(Vector3.zero);
+			CameraRotation = 45f;
+			CameraTarget = Vector3.zero;
+			sceneCamera.tag = "MainCamera";
 
 			if (pixelSize > 1)
 			{
@@ -55,15 +65,20 @@ namespace DreamScape
 			}
 			else
 			{
-				sceneCamera.tag = "MainCamera";
-			}
+				sceneCamera.orthographicSize = (float)Screen.height / (4f * 32f);
 
+			}
 		}
 
 		// Update is called once per frame
 		void Update()
 		{
-
+			if (dirty)
+			{
+				sceneCamera.transform.position = (Quaternion.Euler(30f, CameraRotation, 0f) * new Vector3(0f, 0f, -20f)) + CameraTarget;
+				sceneCamera.transform.LookAt(CameraTarget);
+				dirty = false;
+			}
 		}
 	}
 }
