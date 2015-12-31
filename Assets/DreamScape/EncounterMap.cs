@@ -74,5 +74,10 @@ namespace DreamScape
 			mesh.uv = uvs;
 			mesh.triangles = tris;
 		}
+
+		public Vector3 MapToWorldCoords(int x, int y)
+		{
+			return new Vector3( x + 0.5f, heightmap[x][y], y + 0.5f );
+		}
 	}
 }
