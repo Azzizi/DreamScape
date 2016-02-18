@@ -33,7 +33,7 @@ namespace DreamScape
 			// sceneCamera.backgroundColor = Color.black;
 			sceneCamera.orthographic = true;
 			CameraRotation = 45f;
-			CameraTarget = Vector3.zero;
+			CameraTarget = new Vector3(5f, 0f, 5f);
 			sceneCamera.tag = "MainCamera";
 
 			if (pixelSize > 1)
@@ -73,6 +73,8 @@ namespace DreamScape
 		// Update is called once per frame
 		void Update()
 		{
+			CameraRotation += 30 * Time.deltaTime;
+
 			if (dirty)
 			{
 				sceneCamera.transform.position = (Quaternion.Euler(30f, CameraRotation, 0f) * new Vector3(0f, 0f, -20f)) + CameraTarget;
